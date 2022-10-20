@@ -4,6 +4,8 @@ import {
 	Box, 
 	Container, 
 	Grid, 
+	Card,
+	CardContent,
 	Typography, 
 	TextField,
 	Table,
@@ -26,9 +28,7 @@ import {
 } from '@mui/material';
 /// import { ArrowRightIcon } from '@mui/icons-material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { CustomerListResults } from '../components/customer/customer-list-results';
-import { CustomerListToolbar } from '../components/customer/customer-list-toolbar';
-import { DashboardLayout } from '../components/dashboard-layout';
+import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import { NumberFormatCustom } from '../lib/number-format';
 
 
@@ -76,130 +76,80 @@ function generate(array) {
 }
 
 
-
-const Page = () => {
-	const [user, setUser] = useState(null)
-	const [unit, setUnit] = useState(null)
-	const [pump, setPump] = useState(null)
-	const [checklist, setChecklist] = useState(0)
-	// const prevModel = usePrevious([unit, pump, checklist])
-	const [prevModel, setPrevModel] = useState({})
-
-	const bitStatus = (pos) => ((checklist & (1 << pos)) != 0)
-	const toggleBit = (pos) => setChecklist(checklist ^ (1 << pos))	
-
-	const isDirty = () => {
-		return prevModel.unit !== unit || prevModel.pump !== pump || prevModel.checklist !== checklist
-	}
-
-	const canSave = () => {
-		return (user !== null && unit !== null && unit !== '' && isDirty()) ? {} : { disabled: true };
-	};
-
-	const canSubmit = () => {
-		return (user !== null && unit !== null && unit !== '' && isDirty()) ? {} : { disabled: true };
-	};
-
-
-	return (
-    <>
-      <Head><title>INSPECTION REPORT</title></Head>
-      <Box
-        component="main"
-        sx={{
-			alignItems: 'center',
-			display: 'flex',
-			flexGrow: 1,
-			minHeight: '100%'
-        }}>
-        <Container maxWidth="md">
-	  		<Box
-				sx={{
-		  		alignItems: 'center',
-		  		display: 'flex',
-		  		justifyContent: 'space-between',
-		  		flexWrap: 'wrap',
-		  		m: -1
-				}}>
-				<Typography sx={{ m: 1 }} variant="h4">INSPECTION REPORT</Typography>
-				<Box sx={{ m: 1 }}>
-		  		<Button
-					
+export const ProductListToolbar = (props) => (
+	<Box {...props}>
+	  <Box
+		sx={{
+		  alignItems: 'center',
+		  display: 'flex',
+		  justifyContent: 'space-between',
+		  flexWrap: 'wrap',
+		  m: -1
+		}}
+	  >
+		<Box sx={{ m: 1 }}>
+		  <Button			
 			sx={{ mr: 1 }}
+			color="primary"
+			variant="outlined"
 		  >
-			Import
-		  </Button>
-		  <Button
-			
+			<ReplyOutlinedIcon color="action" />
+		</Button>
+		</Box>
+		<Typography
+		  sx={{ m: 1 }}
+		  variant="h4"
+		>
+		  INSPECTION REPORT
+		</Typography>
+		<Box sx={{ m: 1 }}>
+		  <Button			
 			sx={{ mr: 1 }}
-		  >
-			Export
-		  </Button>
-		  <Button
 			color="primary"
 			variant="contained"
 		  >
-			Add products
+			New
+		  </Button>
+		  <Button			
+			sx={{ mr: 1 }}
+			color="primary"
+			variant="contained"
+		  >
+			Save
+		  </Button>
+		  <Button
+			color="secondary"
+			variant="contained"
+		  >
+			Submit
 		  </Button>
 		</Box>
-	  </Box>
+	  </Box>	  
+	</Box>
+  );
 
-		  <Box sx={{ my: 3 }}>
-          	<Typography color="textPrimary" variant="h6" align="center">INSPECTION REPORT</Typography>
-          </Box>			
+
+const Page = () => {
+	
+	return (
+    <>    
+		<Box>
+		<Container>
+		<ProductListToolbar sx={{ mt: 1 }}/>
+		<Box sx={{ mt: 3 }}>
           <form onSubmit={() => {}}>
-		  	<Grid container spacing={2}>
-			  <Grid item xs={5}>
-			  	<FormControl fullWidth>
-					<InputLabel id="demo-simple-select-label">Supervisor</InputLabel>
-					<Select
-						error={Boolean(user === null)}
+			<FormControl fullWidth>
+					<InputLabel id="demo-simple-select-label">Submitted by</InputLabel>
+			<Select
 						helperText="Supervisor can't be empty"
 						labelId="demo-simple-select-label"
 						id="demo-simple-select"
-						value={user}
-						onChange={(event) => setUser(event.target.value)}
-						label="Supervisor"
-					>
+						label="Supervisor">
 						<MenuItem value={10}>MIKI</MenuItem>
 						<MenuItem value={20}>SK1</MenuItem>
 						<MenuItem value={30}>USER2</MenuItem>
 					</Select>					
-				</FormControl>
-  				</Grid>
-  				<Grid item xs={2}>
-				  	<Button
-                		color="primary"
-                		fullWidth
-                		size="large"
-						onClick={() => console.log(prevModel)}
-                		variant="contained">                
-					NEW
-              		</Button>
-  				</Grid>
-  				<Grid item xs={2}>
-				  	<Button
-                		color="primary"
-                		fullWidth
-                		size="large"
-						{...canSave()}
-						onClick={() => setPrevModel({unit, pump, checklist})}
-                		variant="contained">                
-					SAVE
-              		</Button>
-  				</Grid>
-  				<Grid item xs={3}>
-				  	<Button
-                		color="secondary"
-                		fullWidth
-                		size="large"
-						{...canSubmit()}
-						type="submit"
-                		variant="contained">                
-					SUBMIT
-              		</Button>
-  				</Grid>
-		    </Grid>
+			</FormControl>
             <TextField
               fullWidth
               label="Unit Serial"
@@ -208,9 +158,7 @@ const Page = () => {
 			  InputProps={{
 				inputComponent: NumberFormatCustom,
 			  }}
-              onChange={(event) => setUnit(event.target.value)}
               type="text"
-              value={unit}
               variant="outlined"
             />
             <TextField
@@ -221,13 +169,11 @@ const Page = () => {
 			  InputProps={{
 				inputComponent: NumberFormatCustom,
 			  }}
-              onChange={(event) => setPump(event.target.value)}
               type="text"
-              value={pump}
               variant="outlined"
             />
 			<Typography color="textPrimary" align="center" margin="10px" fontWeight="bold">
-				THE UNIT WAS SUCCESSFULLY SUBJECTED TO THE FOLLOWING CHECKS: {checklist}
+				THE UNIT WAS SUCCESSFULLY SUBJECTED TO THE FOLLOWING CHECKS:
 			</Typography>
 			<TableContainer component={Paper} sx={{ height: 550 }}>
 				  <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
@@ -245,8 +191,6 @@ const Page = () => {
 						  </TableCell>
 						  <TableCell sx={{ border: 1 }} align="center">
 							<Checkbox 
-								checked={bitStatus(row.checkID)}
-								onChange={() => toggleBit(row.checkID)}
 								inputProps={{ 'aria-label': 'controlled' }} />
 						  </TableCell>
 						</TableRow>
@@ -255,6 +199,7 @@ const Page = () => {
 				  </Table>
 				</TableContainer>	            
           </form>
+		  </Box>
         </Container>
       </Box>
     </>
