@@ -15,8 +15,7 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, r
                     name: props.name,
                     value: values.value},
                 });
-            }}
-            isNumericString
+            }}            
         />
     );
 });
