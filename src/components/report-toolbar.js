@@ -38,7 +38,7 @@ export const ReportToolbar = (props) => {
 						INSPECTION REPORT
 					</Typography>
 					<Box sx={{ m: 1 }}>
-						<Button sx={{ mr: 1 }} color="primary" variant="contained" onClick={() => }>
+						<Button sx={{ mr: 1 }} color="primary" variant="contained" onClick={() => {}}>
 							New
 						</Button>
 						<Button

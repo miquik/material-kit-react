@@ -28,6 +28,7 @@ import {
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import NumberFormatCustom from "../lib/number-format";
 import { reportAtom, prevReportAtom, ReportToolbar } from '../components/report-toolbar'
+import { AlertModal } from '../components/simple-modal'
 
 
 function createData(ID, text, sub, checkID) {
